@@ -2,11 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('usuarios')
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
+  @ApiBody({
+    type: CreateUsuarioDto,
+    description: 'Espaço para a criação de um novo usuário!'
+  })
   @Post()
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuariosService.create(createUsuarioDto);
@@ -22,8 +27,12 @@ export class UsuariosController {
     return this.usuariosService.findOne(+id);
   }
 
+  @ApiBody({
+    type: UpdateUsuarioDto,
+    description: 'Espaço para edição do usuário!'
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+  update(@Body('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
     return this.usuariosService.update(+id, updateUsuarioDto);
   }
 
