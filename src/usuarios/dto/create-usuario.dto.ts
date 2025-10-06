@@ -4,6 +4,5 @@ export class CreateUsuarioDto {
     nome: string;
     password: string;
     idade: number;
-    cpf: string;
     celular: string;
 }
