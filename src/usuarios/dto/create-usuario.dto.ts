@@ -1,1 +1,9 @@
-export class CreateUsuarioDto {}
+export class CreateUsuarioDto {
+    id: number;
+    email: string;
+    nome: string;
+    password: string;
+    idade: number;
+    cpf: string;
+    celular: string;
+}
