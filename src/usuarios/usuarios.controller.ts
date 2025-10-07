@@ -4,6 +4,7 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { GetUsuarioDto } from './dto/get-usuario.dto';
+import { DeleteUsuarioDto } from './dto/delete-usuario.dto';
 
 
 @Controller('usuarios')
@@ -46,12 +47,12 @@ export class UsuariosController {
     return await this.usuariosService.update(Number(id), data);
   }
 
-  @ApiBody({
-    type: UpdateUsuarioDto,
+  @ApiResponse({
+    type: DeleteUsuarioDto,
     description: 'Espaço para deletar os dados do usuário cadastrado através do ID!'
   })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usuariosService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.usuariosService.remove(Number(+id));
   }
 }

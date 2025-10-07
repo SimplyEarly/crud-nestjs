@@ -53,9 +53,19 @@ export class UsuariosService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
-  }
-  
+  async remove(id: number) {
+    const usuarioCadastrado = await this.prisma.usuario.findUnique({
+      where: {id}
+
+    })
+
+    if(!usuarioCadastrado) {
+      throw new Error ('Usuário não encontrado!')
+    }
+
+    return await this.prisma.usuario.delete({
+      where: {id}
+    })
+}
 
 }
