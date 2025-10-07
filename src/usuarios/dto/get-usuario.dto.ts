@@ -2,7 +2,8 @@ import { PartialType } from '@nestjs/mapped-types';
 import { CreateUsuarioDto } from './create-usuario.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
+
+export class GetUsuarioDto extends PartialType(CreateUsuarioDto) {
     @ApiProperty({
         description: 'Email do usuário',
         example: 'teste@teste.com', 
@@ -11,7 +12,7 @@ export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
 
 
     @ApiProperty({
-        description: "Nome de usuário"
+        description: "Nome de usuário",
     })
     nome: string;
 

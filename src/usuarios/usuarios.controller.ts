@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { GetUsuarioDto } from './dto/get-usuario.dto';
+
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -17,11 +19,19 @@ export class UsuariosController {
     return this.usuariosService.create(createUsuarioDto);
   }
 
+  @ApiResponse({
+    type: GetUsuarioDto,
+    description: 'Espaço para consulta dos dados dos usuários cadastrados!'
+  })
   @Get()
-  findAll() {
+  async findAll() {
     return this.usuariosService.findAll();
   }
 
+  @ApiResponse({
+    type: GetUsuarioDto,
+    description: 'Espaço para consulta dos dados do usuário através do ID!'
+  })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usuariosService.findOne(+id);
@@ -29,13 +39,17 @@ export class UsuariosController {
 
   @ApiBody({
     type: UpdateUsuarioDto,
-    description: 'Espaço para edição do usuário!'
+    description: 'Espaço para edição dos dados do usuário cadastrado!'
   })
   @Patch(':id')
-  update(@Body('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuariosService.update(+id, updateUsuarioDto);
+  async update(@Param('id') id: number, @Body() data: UpdateUsuarioDto) {
+    return await this.usuariosService.update(Number(id), data);
   }
 
+  @ApiBody({
+    type: UpdateUsuarioDto,
+    description: 'Espaço para deletar os dados do usuário cadastrado através do ID!'
+  })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usuariosService.remove(+id);

@@ -4,6 +4,7 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { hash } from "bcryptjs";
 
+
 @Injectable()
 export class UsuariosService {
   constructor(private prisma: PrismaService){}
@@ -19,17 +20,37 @@ export class UsuariosService {
     return usuarioCreated;
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async findAll() {
+    return await this.prisma.usuario.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: number) {
+    const usuarioCadastrado = await this.prisma.usuario.findUnique({
+      where: {id},
+    });
+
+    if(!usuarioCadastrado) {
+      throw new Error('Usuário não cadastrado!')
+    }
+    return usuarioCadastrado;
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    console.log(' ~ updateUsuarioDto:', updateUsuarioDto)
-    return `This action updates a #${id} usuario`;
+  async update(id: number, data: UpdateUsuarioDto) {
+    const usuarioCadastrado = await this.prisma.usuario.findUnique({
+      where: {
+        id,
+      }
+    });
+
+    if(!usuarioCadastrado) {
+        throw new Error('Usuário não encontrado!');
+    }
+    return await this.prisma.usuario.update({
+        data, 
+        where: {
+            id,
+      }
+    });
   }
 
   remove(id: number) {
